@@ -1,0 +1,673 @@
+﻿@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers
+@using ProjectPRN211.Models
+@model TblDonViTinh
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="~/css/main.css" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="home-wrapper">
+        <header>
+            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill"
+                            data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home"
+                            aria-selected="true">
+                        Hệ thống
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" onclick="UpdateTab()" id="pills-update-tab" data-bs-toggle="pill" data-bs-target="#pills-update"
+                            type="button" role="tab" aria-controls="pills-update" aria-selected="false">
+                        Cập nhật dữ
+                        liệu
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pills-process-tab" data-bs-toggle="pill"
+                            data-bs-target="#pills-process" type="button" role="tab" aria-controls="pills-process"
+                            aria-selected="false">
+                        Xử lý bán hàng
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" onclick="ReportData()" id="pills-report-tab" data-bs-toggle="pill" data-bs-target="#pills-report"
+                            type="button" role="tab" aria-controls="pills-report" aria-selected="false">
+                        Báo cáo
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pills-help-tab" data-bs-toggle="pill" data-bs-target="#pills-help"
+                            type="button" role="tab" aria-controls="pills-help" aria-selected="false">
+                        Trợ giúp
+                    </button>
+                </li>
+            </ul>
+            <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab"
+                     tabindex="0">
+                    <div class="content">
+                        <h1>chương trình quản lý bán hàng</h1>
+                        <img src="~/assets/nhanvien.jpg" alt="nhanvien">
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="pills-update" role="tabpanel" aria-labelledby="pills-update-tab"
+                     tabindex="0">
+                    <div class="content">
+                        <h1>thông tin mặt hàng</h1>
+                        <div class="product-input">
+                            <form action="#">
+                                <h5>Thông tin mặt hàng cập nhật</h5>
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <label for="mahang">Mã hàng :</label>
+                                            </td>
+                                            <td><input disabled oninput="CheckAllLetters(event)" type="text" id="mahang" /></td>
+                                            <td>
+                                                <label for="donvi">Đơn vị tính :</label>
+                                            </td>
+                                            <td>
+                                                <select disabled id="donvi">
+                                                    @foreach (TblDonViTinh item in ViewBag.listGVT)
+                                                    {
+                                                        <option value="@item.Dvt">@item.Dvt</option>
+                                                    }
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label for="tenhang">Tên hàng :</label>
+                                            </td>
+                                            <td><input disabled oninput="CheckAllLetters(event)" type="text" id="tenhang" /></td>
+                                            <td>
+                                                <label for="giaban">Giá bán :</label>
+                                            </td>
+                                            <td><input disabled oninput="CheckNumber(event)" type="text" id="giaban" /></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </form>
+                        </div>
+                        <div class="product-actions">
+                            <button class="btn btn-info" onclick="Moi()">Mới</button>
+                            <button class="btn btn-info" onclick="Them()">Thêm</button>
+                            <button class="btn btn-info" onclick="Sua()">Sửa</button>
+                            <button class="btn btn-info" onclick="CapNhat()">Cập nhật</button>
+                            <button class="btn btn-info" onclick="Xoa()">Xóa</button>
+                        </div>
+                        <div class="product-list">
+                            <h5>Danh sách mặt hàng :</h5>
+                            <div id="product-data">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="pills-process" role="tabpanel" aria-labelledby="pills-process-tab"
+                     tabindex="0">
+                    <div class="content">
+                        <h1>đặt đơn hàng</h1>
+                        <div class="product-user">
+                            <form action="#">
+                                <h5>Thông tin khách hàng</h5>
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <label for="khachhang">Mã khách hàng :</label>
+                                            </td>
+                                            <td><input type="text" id="khachhang" /></td>
+                                            <td></td>
+                                            <td>
+                                                <label for="mahoadon">Mã hóa đơn :</label>
+                                            </td>
+                                            <td><input type="text" id="mahoahon" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label for="tenkhachhang">Tên khách hàng :</label>
+                                            </td>
+                                            <td colspan="2"><input type="text" id="tenkhachhang" /></td>
+                                            <td>
+                                                <label for="ngaydat">Ngày đặt hàng :</label>
+                                            </td>
+                                            <td><input type="text" id="ngaydat" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label for="diachi">Địa chỉ :</label>
+                                            </td>
+                                            <td colspan="3"><input type="text" id="diachi" /></td>
+                                            <td colspan="2" class="text-center fw-bold">
+                                                <button class="btn btn-info">Tạo mới</button>
+                                                <button class="btn btn-info">Đặt mua</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </form>
+                        </div>
+                        <div class="product-order">
+                            <h5>Thông tin mua hàng</h5>
+                            <div class="row">
+                                <div class="col-5">
+                                    <table class="w-100">
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <label for="mathang">Mặt hàng</label>
+                                                </td>
+                                                <td>
+                                                    <select>
+                                                        @foreach (TblMatHang item in @ViewBag.listMatHang)
+                                                        {
+                                                            <option value="@item.MaHang">@item.TenHang</option>
+                                                        }
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><label for="gia">Giá</label></td>
+                                                <td><input type="text" id="gia" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td><label for="soluong">Số lượng</label></td>
+                                                <td><input type="text" id="soluong" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td class="text-center fw-bold">
+                                                    <button class="btn btn-info">Thoát</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-1 invoice-actions">
+                                    <button class="btn btn-info">>></button>
+                                    <button class="btn btn-info">>></button>
+                                </div>
+                                <div class="col-6">
+                                    <h5 class="text-black">Danh sách hàng mua:</h5>
+                                    <table class="table table-hover table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">MaHang</th>
+                                                <th scope="col">TenHang</th>
+                                                <th scope="col">DVT</th>
+                                                <th scope="col">Gia</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>1</td>
+                                                <td>Mark</td>
+                                                <td>Otto</td>
+                                                <td>mdo</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="pills-report" role="tabpanel"
+                     aria-labelledby="pills-report-tab" tabindex="0">
+                    <div class="content">
+                        <h1>Lịch sử bán hàng</h1>
+                        <div class="product-report">
+                            <h5>Thông tin mặt hàng đã bán</h5>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <label for="mahang">Mã hàng :</label>
+                                        </td>
+                                        <td>
+                                            <select id="mahang">
+                                                <option value="0">All</option>
+                                                @foreach (TblMatHang item in ViewBag.listMatHang)
+                                                {
+                                                    <option value="@item.MaHang">@item.MaHang</option>
+                                                }
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <label for="tenmathang">Tên mặt hàng :</label>
+                                        </td>
+                                        <td colspan="2"><input type="text" id="tenmathang" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="from">Từ ngày :</label></td>
+                                        <td><input type="text" id="from" /></td>
+                                        <td>
+                                            <label for="to">Đến ngày :</label>
+                                        </td>
+                                        <td><input type="text" id="to" /></td>
+                                        <td><button class="btn btn-info" onclick="SearchReport()">Tìm kiếm</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center" colspan="2" id="message-from"></td>
+                                        <td class="text-center" colspan="2" id="message-to"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="product-report-list">
+                            <div class="row">
+                                <div class="col-9" id="product-report-data">
+                                </div>
+                                <div class="col-2 product-report-list-actions">
+                                    <button class="btn btn-info">In báo</button>
+                                    <button class="btn btn-info">Thoát</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="pills-help" role="tabpanel" aria-labelledby="pills-help-tab"
+                     tabindex="0">
+                    ...
+                </div>
+            </div>
+        </header>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.1.3/axios.min.js" integrity="sha512-0qU9M9jfqPw6FKkPafM3gy2CBAvUWnYVOfNPDYKVuRTel1PrciTj+a9P3loJB+j0QmN2Y0JYQmkBBS8W+mbezg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
+    <script>
+        function UpdateTab() {
+            document.getElementById("product-data").innerHTML = "Loading data...";
+            setTimeout(() => {
+                axios.get("GetUpdateData")
+                    .then((response) => {
+                        var content = `<table class="table table-hover table-bordered">
+                                                                                                                                                                       <thead>
+                                                                                                                                                                          <tr>
+                                                                                                                                                                              <th scope="col">MaHang</th>
+                                                                                                                                                                               <th scope="col">TenHang</th>
+                                                                                                                                                                               <th scope="col">DVT</th>
+                                                                                                                                                                               <th scope="col">Gia</th>
+                                                                                                                                                                           </tr>
+                                                                                                                                                                       </thead>
+                                                                                                                                                                        <tbody>`;
+                        for (const item of response.data) {
+                            content += `<tr onclick="CellClick('${item.maHang}','${item.tenHang}','${item.dvt}','${item.gia}')">
+                                                                                                                                                                                                                                                        <td>${item.maHang}</td>
+                                                                                                                                                                                                                                                        <td>${item.tenHang}</td>
+                                                                                                                                                                                                                                                        <td>${item.dvt}</td>
+                                                                                                                                                                                                                                                        <td>${item.gia}</td>
+                                                                                                                                                                                                                                                        </tr>`;
+                        }
+                        content += `</tbody>
+                                                                                                                            </table>`;
+                        document.getElementById("product-data").innerHTML = content;
+                    });
+            }, 1000);
+        }
+
+        function RawUpdateTab() {
+              return axios.get("GetUpdateData")
+                    //.then((response) => {
+                    //    var content = `<table class="table table-hover table-bordered">
+                    //                                                                                                                                                   <thead>
+                    //                                                                                                                                                      <tr>
+                    //                                                                                                                                                          <th scope="col">MaHang</th>
+                    //                                                                                                                                                           <th scope="col">TenHang</th>
+                    //                                                                                                                                                           <th scope="col">DVT</th>
+                    //                                                                                                                                                           <th scope="col">Gia</th>
+                    //                                                                                                                                                       </tr>
+                    //                                                                                                                                                   </thead>
+                    //                                                                                                                                                    <tbody>`;
+                    //    for (const item of response.data) {
+                    //        content += `<tr onclick="CellClick('${item.maHang}','${item.tenHang}','${item.dvt}','${item.gia}')">
+                    //                                                                                                                                                                                                                                    <td>${item.maHang}</td>
+                    //                                                                                                                                                                                                                                    <td>${item.tenHang}</td>
+                    //                                                                                                                                                                                                                                    <td>${item.dvt}</td>
+                    //                                                                                                                                                                                                                                    <td>${item.gia}</td>
+                    //                                                                                                                                                                                                                                    </tr>`;
+                    //    }
+                    //    content += `</tbody>
+                    //                                                                                                        </table>`;  
+                    //                                                                                                        return response.json()
+                    //});
+                    .then(response => response.data)
+        }
+
+        var oldMaHang;
+        var isClicked;
+        function CellClick(maHang, tenHang, dvt, gia) {
+            document.getElementById("mahang").value = maHang;
+            isClicked = true;
+            oldMaHang = maHang;
+            document.getElementById("tenhang").value = tenHang;
+            document.getElementById("donvi").value = dvt;
+            document.getElementById("giaban").value = gia;
+        }
+
+        function ReportData() {
+            document.getElementById("product-report-data").innerHTML = "Loading data...";
+            setTimeout(() => {
+                axios.get("GetReportData")
+                    .then((response) => {
+                        var content = `<table class="table table-hover table-bordered">
+                                                                                                                                                                                                                                                <thead>
+                                                                                                                                                                                                                                                    <tr>
+                                                                                                                                                                                                                                                        <th scope="col">MaHD</th>
+                                                                                                                                                                                                                                                        <th scope="col">NgayHD</th>
+                                                                                                                                                                                                                                                        <th scope="col">MaKH</th>
+                                                                                                                                                                                                                                                        <th scope="col">TenKH</th>
+                                                                                                                                                                                                                                                        <th scope="col">MaHang</th>
+                                                                                                                                                                                                                                                        <th scope="col">TenHang</th>
+                                                                                                                                                                                                                                                        <th scope="col">DVT</th>
+                                                                                                                                                                                                                                                        <th scope="col">Gia</th>
+                                                                                                                                                                                                                                                        <th scope="col">Soluong</th>
+                                                                                                                                                                                                                                                    </tr>
+                                                                                                                                                                                                                                                </thead>
+                                                                                                                                                                                                                                                <tbody>`;
+                        for (const item of response.data) {
+                            var date = item.ngayHD;
+                            var ngayHD = new Date(date).toLocaleDateString("en-GB");
+                            content += `<tr>
+                                                                                                                                                                                                                                                        <td>${item.maHd}</td>
+                                                                                                                                                                                                                                                        <td>${ngayHD}</td>
+                                                                                                                                                                                                                                                        <td>${item.maKH}</td>
+                                                                                                                                                                                                                                                        <td>${item.tenKH}</td>
+                                                                                                                                                                                                                                                        <td>${item.maHang}</td>
+                                                                                                                                                                                                                                                        <td>${item.tenHang}</td>
+                                                                                                                                                                                                                                                        <td>${item.dvt}</td>
+                                                                                                                                                                                                                                                        <td>${item.gia}</td>
+                                                                                                                                                                                                                                                        <td>${item.soluong}</td>
+                                                                                                                                                                                                                                                    </tr>`;
+                        }
+                        content += `</tbody>
+                                                                                                                                                                                                                                    </table>`;
+                        document.getElementById("product-report-data").innerHTML = content;
+                    });
+            }, 1000);
+        }
+
+        function SearchReport()  {
+            var from = document.getElementById("from").value;
+            var to = document.getElementById("to").value;
+            if (!moment(from, "DD/MM/YYYY", true).isValid()) {
+                var p = document.createElement('p');
+                p.className = "text-info";
+                p.innerHTML = `Wrong format date!<br/>Follow "dd/mm/yyyy" and digits only`;
+                document.getElementById("message-from").appendChild(p)
+                if (document.getElementById("message-from").childNodes.length > 1) {
+                    document.getElementById("message-from").removeChild(p)
+                }
+            } else if (moment(from, "DD/MM/YYYY", true).isValid()) {
+                document.getElementById("message-from").innerHTML = "";
+            }
+            if (!moment(to, "DD/MM/YYYY", true).isValid()) {
+                var p = document.createElement('p');
+                p.className = "text-info";
+                p.innerHTML = `Wrong format date!<br/>Follow "dd/mm/yyyy" and digits only`;
+                document.getElementById("message-to").appendChild(p)
+                if (document.getElementById("message-to").childNodes.length > 1) {
+                    document.getElementById("message-to").removeChild(p)
+                }
+            } else if (moment(to, "DD/MM/YYYY", true).isValid()) {
+                document.getElementById("message-to").innerHTML = "";
+            }
+            if (moment(from, "DD/MM/YYYY", true).isValid() && moment(to, "DD/MM/YYYY", true).isValid()) {
+                document.getElementById("product-report-data").innerHTML = "Loading data...";
+                setTimeout(() => {
+                    axios.get("SearchReportData", {
+                        params: {
+                            from, to
+                        }
+                    })
+                        .then((response) => {
+                            var content = `<table class="table table-hover table-bordered">
+                                                                                                                                                                                                                                                        <thead>
+                                                                                                                                                                                                                                                            <tr>
+                                                                                                                                                                                                                                                                <th scope="col">MaHD</th>
+                                                                                                                                                                                                                                                                <th scope="col">NgayHD</th>
+                                                                                                                                                                                                                                                              <th scope="col">MaKH</th>
+                                                                                                                                                                                                                                                             <th scope="col">TenKH</th>
+                                                                                                                                                                                                                                                              <th scope="col">MaHang</th>
+                                                                                                                                                                                                                                                                <th scope="col">TenHang</th>
+                                                                                                                                                                                                                                                              <th scope="col">DVT</th>
+                                                                                                                                                                                                                                                                <th scope="col">Gia</th>
+                                                                                                                                                                                                                                                              <th scope="col">Soluong</th>
+                                                                                                                                                                                                                                                           </tr>
+                                                                                                                                                                                                                                                       </thead>
+                                                                                                                                                                                                                                                        <tbody>`;
+                            for (const item of response.data) {
+                                var date = item.ngayHD;
+                                var ngayHD = new Date(date).toLocaleDateString("en-GB");
+                                content += `<tr>
+                                                                                                                                                                                                                                                                <td>${item.maHd}</td>
+                                                                                                                                                                                                                                                                <td>${ngayHD}</td>
+                                                                                                                                                                                                                                                                <td>${item.maKH}</td>
+                                                                                                                                                                                                                                                                <td>${item.tenKH}</td>
+                                                                                                                                                                                                                                                                <td>${item.maHang}</td>
+                                                                                                                                                                                                                                                                <td>${item.tenHang}</td>
+                                                                                                                                                                                                                                                                <td>${item.dvt}</td>
+                                                                                                                                                                                                                                                                <td>${item.gia}</td>
+                                                                                                                                                                                                                                                                <td>${item.soluong}</td>
+                                                                                                                                                                                                                                                            </tr>`;
+                            }
+                            content += `</tbody>
+                                                                                                                                                                                                                                           </table>`;
+                            document.getElementById("product-report-data").innerHTML = content;
+                        })
+                        .catch((error) => {
+                            console.log(error)
+                        });
+                }, 1000);
+            }
+        }
+
+        function isDisabled(input){
+            document.getElementById("mahang").disabled = input;
+            document.getElementById("tenhang").disabled = input;
+            document.getElementById("donvi").disabled = input;
+            document.getElementById("giaban").disabled = input;
+        }
+
+        function Moi() {
+            isDisabled(false)
+        }
+
+        function Them() {
+            if (document.getElementById("mahang").disabled !== true && document.getElementById("tenhang").disabled !== true && document.getElementById("donvi").disabled !== true && document.getElementById("giaban").disabled !== true) {
+                if (document.getElementById("mahang").value.trim() !== "" && document.getElementById("tenhang").value.trim() !== "" && document.getElementById("giaban").value.trim() !== "") {
+                    if (CheckAllLettersSubmit(document.getElementById("mahang").value) && CheckAllLettersSubmit(document.getElementById("tenhang").value) && CheckNumberSubmit(document.getElementById("giaban").value)) {
+            var ma = document.getElementById("mahang").value
+            var ten = document.getElementById("tenhang").value
+            var dvt = document.getElementById("donvi").value
+            var gia = document.getElementById("giaban").value
+            axios.get("AddMatHang", {
+                params: {
+                    ma,ten,dvt,gia,
+                    }
+                })
+                .then((response) => {
+                    if(response.data.length !== undefined){
+                   var content = `<table class="table table-hover table-bordered">
+                                                                                                                                                                               <thead>
+                                                                                                                                                                                  <tr>
+                                                                                                                                                                                      <th scope="col">MaHang</th>
+                                                                                                                                                                                       <th scope="col">TenHang</th>
+                                                                                                                                                                                       <th scope="col">DVT</th>
+                                                                                                                                                                                       <th scope="col">Gia</th>
+                                                                                                                                                                                   </tr>
+                                                                                                                                                                               </thead>
+                                                                                                                                                                                <tbody>`;
+                    for (const item of response.data) {
+                        content += `<tr onclick="CellClick('${item.maHang}','${item.tenHang}','${item.dvt}','${item.gia}')">
+                                                                                                                                                                                                                                                                <td>${item.maHang}</td>
+                                                                                                                                                                                                                                                                <td>${item.tenHang}</td>
+                                                                                                                                                                                                                                                                <td>${item.dvt}</td>
+                                                                                                                                                                                                                                                                <td>${item.gia}</td>
+                                                                                                                                                                                                                                                                </tr>`;
+                    }
+                    content += `</tbody>
+                                                                                                                                    </table>`;
+                    document.getElementById("product-data").innerHTML = content;
+                    }else{
+                        throw response;
+                    }
+                })
+                .catch((error) => {
+                alert("Mahang " + ma+" đã tồn tại");
+                var raw = RawUpdateTab();
+                raw.then((response)=>{
+                                    var content = `<table class="table table-hover table-bordered">
+                                                                                                                                                                               <thead>
+                                                                                                                                                                                  <tr>
+                                                                                                                                                                                      <th scope="col">MaHang</th>
+                                                                                                                                                                                       <th scope="col">TenHang</th>
+                                                                                                                                                                                       <th scope="col">DVT</th>
+                                                                                                                                                                                       <th scope="col">Gia</th>
+                                                                                                                                                                                   </tr>
+                                                                                                                                                                               </thead>
+                                                                                                                                                                                <tbody>`;
+                                    for (const item of response) {
+                                        content += `<tr onclick="CellClick('${item.maHang}','${item.tenHang}','${item.dvt}','${item.gia}')">
+                                                                                                                                                                                                                                                                <td>${item.maHang}</td>
+                                                                                                                                                                                                                                                                <td>${item.tenHang}</td>
+                                                                                                                                                                                                                                                                <td>${item.dvt}</td>
+                                                                                                                                                                                                                                                                <td>${item.gia}</td>
+                                                                                                                                                                                                                                                                </tr>`;
+                                    }
+                                    content += `</tbody>
+                                                                                                                                    </table>`;
+                                    document.getElementById("product-data").innerHTML = content;
+                })
+                });
+                    }else{
+                        console.log("vcl1")
+                    }
+                }else{
+                    console.log("vcl2")
+                }
+            }else{
+                console.log("vcl3")
+            }
+        }
+
+        function Sua() {
+            isDisabled(false)
+        }
+
+        function CapNhat() {
+            if (isClicked) {
+                console.log(oldMaHang)
+            }
+        }
+
+        function Xoa() { 
+            var ma = document.getElementById("mahang").value
+            axios.get("DeleteMatHanh", {
+                params: {
+                    ma
+                }
+            })
+                .then((response) => {
+                        var content = `<table class="table table-hover table-bordered">
+                                                                                                                                                                                       <thead>
+                                                                                                                                                                                          <tr>
+                                                                                                                                                                                              <th scope="col">MaHang</th>
+                                                                                                                                                                                               <th scope="col">TenHang</th>
+                                                                                                                                                                                               <th scope="col">DVT</th>
+                                                                                                                                                                                               <th scope="col">Gia</th>
+                                                                                                                                                                                           </tr>
+                                                                                                                                                                                       </thead>
+                                                                                                                                                                                        <tbody>`;
+                        for (const item of response.data) {
+                            content += `<tr onclick="CellClick('${item.maHang}','${item.tenHang}','${item.dvt}','${item.gia}')">
+                                                                                                                                                                                                                                                                        <td>${item.maHang}</td>
+                                                                                                                                                                                                                                                                        <td>${item.tenHang}</td>
+                                                                                                                                                                                                                                                                        <td>${item.dvt}</td>
+                                                                                                                                                                                                                                                                        <td>${item.gia}</td>
+                                                                                                                                                                                                                                                                        </tr>`;
+                        }
+                        content += `</tbody>
+                                                                                                                                            </table>`;
+                        document.getElementById("product-data").innerHTML = content;
+                });
+                document.getElementById("mahang").value = ""
+             document.getElementById("tenhang").value = ""
+             document.getElementById("donvi").value = ""
+             document.getElementById("giaban").value = ""
+        }
+
+        function formatText(str){
+            str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
+            str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
+            str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
+            str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o");
+            str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u");
+            str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y");
+            str = str.replace(/đ/g, "d");
+            str = str.replace(/À|Á|Ạ|Ả|Ã|Â|Ầ|Ấ|Ậ|Ẩ|Ẫ|Ă|Ằ|Ắ|Ặ|Ẳ|Ẵ/g, "A");
+            str = str.replace(/È|É|Ẹ|Ẻ|Ẽ|Ê|Ề|Ế|Ệ|Ể|Ễ/g, "E");
+            str = str.replace(/Ì|Í|Ị|Ỉ|Ĩ/g, "I");
+            str = str.replace(/Ò|Ó|Ọ|Ỏ|Õ|Ô|Ồ|Ố|Ộ|Ổ|Ỗ|Ơ|Ờ|Ớ|Ợ|Ở|Ỡ/g, "O");
+            str = str.replace(/Ù|Ú|Ụ|Ủ|Ũ|Ư|Ừ|Ứ|Ự|Ử|Ữ/g, "U");
+            str = str.replace(/Ỳ|Ý|Ỵ|Ỷ|Ỹ/g, "Y");
+            str = str.replace(/Đ/g, "D");
+            str = str.replace(/\s+/g, ' ');
+            str.trim();
+            return str;
+        }
+
+        function CheckAllLetters(event) {
+            var letterNumber = /^[0-9A-Za-z ]+$/;
+            var formatedText = formatText(event.target.value)
+            if (formatedText.match(letterNumber)) {
+                return true;
+            }
+            return false;
+        }
+
+        function CheckAllLettersSubmit(input) {
+            var letterNumber = /^[0-9A-Za-z ]+$/;
+            var formatedText = formatText(input)
+            if (formatedText.match(letterNumber)) {
+                return true;
+            }
+            return false;
+        }
+
+        function CheckNumber(event) {
+            if (!isNaN(!event.target.value)) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+
+        function CheckNumberSubmit(input) {
+            if (!isNaN(!input)) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    </script>
+</body>
+
+</html>

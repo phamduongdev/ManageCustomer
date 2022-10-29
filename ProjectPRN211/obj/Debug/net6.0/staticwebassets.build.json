@@ -1,0 +1,71 @@
+{
+  "Version": 1,
+  "Hash": "/Ml6ciioirp401KaBPhP1d5NEwr18ezEuYuj1s73blQ=",
+  "Source": "ProjectPRN211",
+  "BasePath": "_content/ProjectPRN211",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "ProjectPRN211\\wwwroot",
+      "Source": "ProjectPRN211",
+      "ContentRoot": "D:\\PRN211\\ProjectPRN211\\ProjectPRN211\\wwwroot\\",
+      "BasePath": "_content/ProjectPRN211",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "D:\\PRN211\\ProjectPRN211\\ProjectPRN211\\wwwroot\\assets\\nhanvien.jpg",
+      "SourceId": "ProjectPRN211",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\PRN211\\ProjectPRN211\\ProjectPRN211\\wwwroot\\",
+      "BasePath": "_content/ProjectPRN211",
+      "RelativePath": "assets/nhanvien.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\assets\\nhanvien.jpg"
+    },
+    {
+      "Identity": "D:\\PRN211\\ProjectPRN211\\ProjectPRN211\\wwwroot\\css\\main.css",
+      "SourceId": "ProjectPRN211",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\PRN211\\ProjectPRN211\\ProjectPRN211\\wwwroot\\",
+      "BasePath": "_content/ProjectPRN211",
+      "RelativePath": "css/main.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\main.css"
+    },
+    {
+      "Identity": "D:\\PRN211\\ProjectPRN211\\ProjectPRN211\\wwwroot\\css\\main.scss",
+      "SourceId": "ProjectPRN211",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\PRN211\\ProjectPRN211\\ProjectPRN211\\wwwroot\\",
+      "BasePath": "_content/ProjectPRN211",
+      "RelativePath": "css/main.scss",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\main.scss"
+    }
+  ]
+}

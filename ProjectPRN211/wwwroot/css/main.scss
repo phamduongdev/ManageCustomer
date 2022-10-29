@@ -1,0 +1,164 @@
+﻿body {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+/* login */
+.login-wrapper {
+    width: 50%;
+    margin: auto;
+}
+
+.login-wrapper input {
+    width: 30%;
+    outline: none;
+}
+
+.login-wrapper .btn-submit {
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* home */
+.home-wrapper {
+    background-color: grey;
+    height: 100%;
+}
+
+.home-wrapper .navbar {
+    background-color: #e3f2fd !important;
+    font-weight: bold;
+}
+
+.home-wrapper .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.home-wrapper .content h1 {
+    margin: 30px 0 30px 0;
+    text-align: center;
+    text-transform: uppercase;
+    background-color: white;
+}
+
+.home-wrapper .content img {
+    margin-bottom: 95px;
+}
+
+.nav.nav-pills {
+    background-color: #e3f2fd !important;
+    font-weight: bold;
+}
+
+.nav-pills .nav-item .nav-link.active {
+    opacity: 1;
+}
+
+.nav-pills .nav-item .nav-link {
+    color: black;
+    opacity: .7;
+    transition: all .3s;
+}
+
+.nav-pills .nav-item .nav-link:hover {
+    opacity: 1;
+}
+
+/* product */
+.product-input label,
+.product-user label,
+.product-order label,
+.product-report label {
+    font-weight: bold;
+}
+
+.product-input input,
+select,
+.product-user input,
+select,
+select .product-order input,
+select,
+.product-report input,
+select {
+    width: 100%;
+    outline: none;
+    padding: 3px;
+}
+
+.product-input,
+.product-actions {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.product-actions {
+    margin: 20px 0 20px 0;
+}
+
+.product-actions button,
+.product-user button,
+.product-order button,
+.product-report button,
+.product-report-list-actions button {
+    width: 100px;
+    font-weight: bold;
+}
+
+.product-list,
+.product-order {
+    width: 50%;
+}
+
+.product-report-list {
+    width: 80%;
+}
+
+.product-list table thead tr th,
+.product-order table.table thead tr th,
+.product-report-list table.table thead tr th {
+    background-color: #dabcbc;
+}
+
+.product-list table tbody tr,
+.product-order table.table tbody tr,
+#product-report-data table.table tbody tr {
+    background-color: white;
+    cursor: pointer;
+}
+
+.product-input table tbody tr td,
+.product-user table tbody tr td,
+.product-user table tbody tr td,
+.product-report table tbody tr td,
+.product-order table tbody tr td {
+    padding: 10px;
+}
+
+.product-input h5,
+.product-list h5,
+.product-order h5,
+.product-user h5,
+.product-report h5 {
+    font-style: italic;
+    color: blue;
+}
+
+.invoice-actions button {
+    padding: 0;
+    width: 40px;
+    margin-bottom: 5px;
+}
+
+.product-report-list-actions {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
