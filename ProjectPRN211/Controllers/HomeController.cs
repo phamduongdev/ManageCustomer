@@ -130,5 +130,20 @@ namespace ProjectPRN211.Controllers
             var data = context.TblMatHangs.ToList();
             return Json(data);
         }
+
+        public JsonResult SearchKhachHang(string maKH, string tenKH)
+        {
+            var data = context.TblChiTietHds.Select(item => new
+            {
+                MaHd = item.MaHd,
+                NgayHD = item.MaHdNavigation.NgayHd,
+                MaKH = item.MaHdNavigation.MaKh,
+                TenKH = context.TblKhachHangs.FirstOrDefault(x => x.MaKh == item.MaHdNavigation.MaKh).TenKh,
+                Diachi = context.TblKhachHangs.FirstOrDefault(x => x.MaKh == item.MaHdNavigation.MaKh).Diachi
+            })
+            .ToList();
+            var khachHang = data.Where(item => item.MaKH == maKH && item.TenKH == tenKH).ToList();
+            return Json(khachHang);
+        }
     }
 }
