@@ -133,7 +133,7 @@
                                             <td>
                                                 <label for="mahoadon">Mã hóa đơn :</label>
                                             </td>
-                                            <td><input type="text" id="mahoahon" /></td>
+                                            <td><input type="text" oninput="FillInvoice()" id="mahoahon" /></td>
                                         </tr>
                                         <tr>
                                             <td>
@@ -152,7 +152,7 @@
                                             <td colspan="3"><input type="text" id="diachi" /></td>
                                             <td colspan="2" class="text-center fw-bold">
                                                 <button class="btn btn-info" onclick="TaoMoi()">Tạo mới</button>
-                                                <button class="btn btn-info" onclick="DatMua()">Đặt mua</button>
+                                                <button class="btn btn-info" id="datmua" disabled onclick="DatMua()">Đặt mua</button>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -170,21 +170,21 @@
                                                     <label for="mathang">Mặt hàng</label>
                                                 </td>
                                                 <td>
-                                                    <select onchange="ChangePrice(this)">
+                                                    <select id="tenHangInvoice" onchange="ChangePrice(this)">
                                                         @foreach (TblMatHang item in @ViewBag.listMatHang)
                                                         {
-                                                            <option value="@item.Gia">@item.TenHang</option>
+                                                            <option data-price="@item.Gia" data-tenHang="@item.TenHang">@item.TenHang</option>
                                                         }
                                                     </select>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td><label for="gia">Giá</label></td>
-                                                <td><input type="text" id="gia" /></td>
+                                                <td><input type="text" id="giaInvoice" /></td>
                                             </tr>
                                             <tr>
                                                 <td><label for="soluong">Số lượng</label></td>
-                                                <td><input type="text" id="soluong" /></td>
+                                                <td><input type="text" id="soluongInvoice" /></td>
                                             </tr>
                                             <tr>
                                                 <td></td>
@@ -197,7 +197,7 @@
                                 </div>
                                 <div class="col-1 invoice-actions">
                                     <button class="btn btn-info">>></button>
-                                    <button class="btn btn-info">>></button>
+                                    <button class="btn btn-info"><<</button>
                                 </div>
                                 <div class="col-6">
                                     <h5 class="text-black">Danh sách hàng mua:</h5>
@@ -205,18 +205,15 @@
                                         <thead>
                                             <tr>
                                                 <th scope="col">MaHang</th>
+                                                <th scope="col">NgayMua</th>
                                                 <th scope="col">TenHang</th>
                                                 <th scope="col">DVT</th>
                                                 <th scope="col">Gia</th>
+                                                <th scope="col">SoLuong</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>Mark</td>
-                                                <td>Otto</td>
-                                                <td>mdo</td>
-                                            </tr>
+                                        <tbody id="invoice-data">
+                                            
                                         </tbody>
                                     </table>
                                 </div>
@@ -564,8 +561,8 @@
         }
 
         function ChangePrice(select) {
-            var price = select.options[select.selectedIndex].value
-            document.getElementById("gia").value = price
+            var price = select.options[select.selectedIndex].getAttribute('data-price')
+            document.getElementById("giaInvoice").value = price
         }
 
         var timesUp
@@ -585,17 +582,68 @@
                                 const khachHang = response.data
                                 var date = khachHang[0].ngayHD;
                                 var ngayHD = new Date(date).toLocaleDateString("en-GB");
-                                document.getElementById("mahoahon").value = khachHang[0].maHd
                                 document.getElementById("ngaydat").value = ngayHD
                                 document.getElementById("diachi").value = khachHang[0].diachi
                             } else {
-                                document.getElementById("mahoahon").value = ""
                                 document.getElementById("ngaydat").value = ""
                                 document.getElementById("diachi").value = ""
                             }
                         })
                 }, 0)
             }
+        }
+
+        function FillInvoice(){
+            document.getElementById("datmua").disabled = true;
+            clearTimeout(timesUp)
+            var maKH = document.getElementById("makhachhang").value.trim()
+            var maHD = document.getElementById("mahoahon").value.trim()
+            if (maKH !== "" && maHD !== "") {
+                timesUp = setTimeout(() => {
+                    axios.get("SearchHoaDonKhachHang", {
+                        params: {
+                            maKH, maHD
+                        }
+                    })
+                        .then((response) => {
+                            console.log(response.data)
+                            if (response.data.length >= 1) {
+                            var content = "";
+                            for (const item of response.data) {
+                                var date = item.ngayMua;
+                                var ngayMua = new Date(date).toLocaleDateString("en-GB");
+                                    content += `<tr onclick="CellClickInvoice('${item.maKH}', '${item.maHang}', '${item.tenHang}', ${item.gia}, ${item.soluong})">
+                                                <td>${item.maHang}</td>
+                                                <td>${ngayMua}</td>
+                                                <td>${item.tenHang}</td>
+                                                <td>${item.dvt}</td>
+                                                <td>${item.gia}</td>
+                                                <td>${item.soluong}</td>
+                                            </tr>`
+                            }
+                            document.getElementById("invoice-data").innerHTML = content;
+                            }else{
+                                document.getElementById("datmua").disabled = false;
+                            }
+                        })
+                }, 0)
+            }
+        }
+
+        var maKH
+        var maHang
+        var tenHang
+        var gia
+        var soLuong
+        function CellClickInvoice(maKH, maHang, tenHang, gia, soLuong){
+            maKH = maKH
+            maHang = maHang
+            tenHang = tenHang
+            gia = gia
+            soLuong = soLuong
+            document.getElementById("tenHangInvoice").value = tenHang;
+            document.getElementById("giaInvoice").value = gia;
+            document.getElementById("soluongInvoice").value = soLuong;
         }
 
         function ReportData() {
@@ -715,7 +763,6 @@
             }
         }
     </script>
-    }
 </body>
 
 </html>

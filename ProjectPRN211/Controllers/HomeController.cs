@@ -33,7 +33,7 @@ namespace ProjectPRN211.Controllers
                 DVT = context.TblMatHangs.FirstOrDefault(x => x.MaHang == item.MaHang).Dvt,
                 Gia = context.TblMatHangs.FirstOrDefault(x => x.MaHang == item.MaHang).Gia,
                 Soluong = item.Soluong
-            }).ToList();
+            }).OrderBy(item => item.TenKH).ToList();
             return Json(data);
         }
 
@@ -144,6 +144,22 @@ namespace ProjectPRN211.Controllers
             .ToList();
             var khachHang = data.Where(item => item.MaKH == maKH && item.TenKH == tenKH).ToList();
             return Json(khachHang);
+        }
+
+        public JsonResult SearchHoaDonKhachHang(string maHD, string maKH)
+        {
+            var data = context.TblChiTietHds.Select(item => new
+            {
+                MaHd = item.MaHd,
+                MaKH = item.MaHdNavigation.MaKh,
+                NgayMua = item.MaHdNavigation.NgayHd,
+                MaHang = item.MaHang,
+                TenHang = context.TblMatHangs.FirstOrDefault(x => x.MaHang == item.MaHang).TenHang,
+                DVT = context.TblMatHangs.FirstOrDefault(x => x.MaHang == item.MaHang).Dvt,
+                Gia = context.TblMatHangs.FirstOrDefault(x => x.MaHang == item.MaHang).Gia,
+                Soluong = item.Soluong
+            }).Where(item => item.MaHd == Convert.ToInt32(maHD) && item.MaKH == maKH).ToList();
+            return Json(data);
         }
     }
 }
