@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProjectPRN211.Models;
 using System.Globalization;
-using System.Text.Json.Nodes;
 
 namespace ProjectPRN211.Controllers
 {
@@ -177,12 +176,6 @@ namespace ProjectPRN211.Controllers
             }
             var data = context.TblCarts.Count();
             return Json(data);
-        }
-
-        public JsonResult CheckOut(string data_order)
-        {
-            var objects = JsonArray.Parse(data_order);
-            return Json(objects[0]["name"]);
         }
 
         public JsonResult SearchHoaDonKhachHang(string maHD, string maKH)

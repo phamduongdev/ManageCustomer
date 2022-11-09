@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace ProjectPRN211.Models
+﻿namespace ProjectPRN211.Models
 {
     public partial class TblChiTietHd
     {

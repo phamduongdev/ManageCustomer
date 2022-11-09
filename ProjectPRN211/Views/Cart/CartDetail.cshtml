@@ -17,45 +17,187 @@
 </head>
 
 <body>
-    <header class="cart-wrapper container">
+    <header class="cart-wrapper container" id="cart-wrapper">
         <a asp-controller="Home" asp-action="Tasks">Back to shop</a>
-        <table class="table caption-top">
-            <caption>List of Carts</caption>
-            <thead>
-                <tr>
-                    <th scope="col">MaHang</th>
-                    <th scope="col">TenHang</th>
-                    <th scope="col">Gia</th>
-                    <th scope="col">SoLuong</th>
-                    <th scope="col">Total</th>
-                    <th scope="col"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (TblCart item in ViewBag.Carts)
-                {
-                    <tr>
-                        <th scope="row">@item.MaHang</th>
-                        <td>@item.TenHang</td>
-                        <td>@item.Gia</td>
-                        <td>@item.Soluong</td>
-                        <td>@(item.Gia * item.Soluong)</td>
-                        <td><button class="btn btn-warning">X</button></td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-        <button class="btn btn-danger">Clear All</button>
-        <div class="d-flex justify-content-end">
-            <h1 class="text-end">Số tiền phải trả: @ViewBag.Sum</h1>
-            <button class="btn btn-info">Thanh Toán</button>
-        </div>
+        @if (ViewBag.Size != 0)
+        {
+            <div id="all-cart">
+                <table class="table caption-top">
+                    <thead>
+                        <tr>
+                            <th scope="col">MaHang</th>
+                            <th scope="col">TenHang</th>
+                            <th scope="col">Gia</th>
+                            <th scope="col">SoLuong</th>
+                            <th scope="col">Total</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="cart-data">
+                        @foreach (TblCart item in ViewBag.Carts)
+                        {
+                            <tr>
+                                <th scope="row">@item.MaHang</th>
+                                <td>@item.TenHang</td>
+                                <td>@item.Gia</td>
+                                <td>
+                                    <div class="number-input">
+                                        <button onclick="this.parentNode.querySelector('input[type=number]').stepDown(); UpdateQuantity(this.parentNode.querySelector('input[type=number]'), '@item.MaHang');"></button>
+                                        <input type="number" min="1" value="@item.Soluong" id="soluong" name="soluong" onchange="UpdateQuantity(this, '@item.MaHang')">
+                                        <button onclick="this.parentNode.querySelector('input[type=number]').stepUp(); UpdateQuantity(this.parentNode.querySelector('input[type=number]'), '@item.MaHang');" class="plus"></button>
+                                    </div>
+                                </td>
+                                <td id="tong">@(item.Gia * item.Soluong)</td>
+                                <td><button class="btn btn-warning btn-cancelSingle" onclick="CancelSingle('@item.MaHang')">X</button></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <button class="btn btn-danger btn-cancelAll" onclick="CancelAll()">Clear All</button>
+                <div class="d-flex justify-content-end">
+                    <form id="frm">
+                        <h1 class="text-end">Số tiền phải trả: <span id="tongTien">@ViewBag.Sum</span></h1>
+                        <input type="text" id="maKH" placeholder="Nhap ma khach hang..." />
+                        <br />
+                        <input type="text" id="tenKH" placeholder="Nhap ten khach hang..." />
+                        <br />
+                        <button class="btn btn-info" type="button" onclick="CheckOut()">Thanh Toán</button>
+                    </form>
+                </div>
+            </div>
+        }
+        else
+        {
+            <h1 id="message">Chưa có Cart</h1>
+        }
     </header>
+
+    @*<button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#checkout">Thanh Toán</button>*@
+    <!-- Modal -->
+    <div class="modal fade" id="checkout" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="checkout">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
             crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.1.3/axios.min.js" integrity="sha512-0qU9M9jfqPw6FKkPafM3gy2CBAvUWnYVOfNPDYKVuRTel1PrciTj+a9P3loJB+j0QmN2Y0JYQmkBBS8W+mbezg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
+    <script>
+        function CheckOut() {
+            var rows = document.getElementById("cart-data").rows;
+            var data = [{ maKH: document.getElementById("maKH").value.trim(), tenKH: document.getElementById("tenKH").value.trim() }];
+            Object.keys(rows).forEach(indexrow => {
+                data.push(
+                    {
+                        maHang: document.getElementById("cart-data").rows[indexrow].cells[0].innerHTML,
+                        tenHang: document.getElementById("cart-data").rows[indexrow].cells[1].innerHTML,
+                        soLuong: document.getElementById("cart-data").rows[indexrow].cells[3].getElementsByTagName('input').soluong.value
+                    }
+                );
+            });
+            const data_order = JSON.stringify(data)
+            console.log(data_order)
+            //axios.get("CheckOut", {
+            //    params: {
+            //        data_order
+            //    }
+            //})
+            //    .then((response) => {
+            //        console.log(response.data === "OK" ? "OK" : "Error")
+            //    })
+        }
+
+        function CancelSingle(maHang) {
+            axios.get("CancelSingle", {
+                params: {
+                    maHang
+                }
+            })
+                .then((response) => {
+                    var content = "";
+                    if (response.data.carts.length > 0) {
+                        for (const item of response.data.carts) {
+                            content += `<tr>
+                                                <th scope="row">${item.maHang}</th>
+                                                <td>${item.tenHang}</td>
+                                                <td>${item.gia}</td>
+                                                <td>
+                                                    <div class="number-input">
+                                                        <button onclick="this.parentNode.querySelector('input[type=number]').stepDown(); UpdateQuantity(this.parentNode.querySelector('input[type=number]'), '${item.maHang}');"></button>
+                                                        <input type="number" min="1" id="soluong" name="soluong" onchange="UpdateQuantity(this, '${item.maHang}')" value="${item.soluong}">
+                                                        <button onclick="this.parentNode.querySelector('input[type=number]').stepUp(); UpdateQuantity(this.parentNode.querySelector('input[type=number]'), '${item.maHang}');" class="plus"></button>
+                                                    </div>
+                                                </td>
+                                                <td>${(item.gia * item.soluong)}</td>
+                                                <td><button class="btn btn-warning btn-cancelSingle" onclick="CancelSingle('${item.maHang}')">X</button></td>
+                                    </tr>`
+                        }
+                        document.getElementById("cart-data").innerHTML = content
+                        document.getElementById("tongTien").innerHTML = response.data.sum
+                    } else {
+                        document.getElementById("all-cart").remove()
+                        var h1 = document.createElement("h1")
+                        h1.innerHTML = "Chưa có Cart"
+                        document.getElementById("cart-wrapper").appendChild(h1)
+                    }
+                })
+        }
+
+        function CancelAll() {
+            axios.get("CancelAll")
+                .then((response) => {
+                    document.getElementById("all-cart").remove()
+                    var h1 = document.createElement("h1")
+                    h1.innerHTML = "Chưa có Cart"
+                    document.getElementById("cart-wrapper").appendChild(h1)
+                })
+        }
+
+        function UpdateQuantity(input, maHang) {
+            var soLuong = input.value
+            axios.get("UpdateQuantity", {
+                params: {
+                    soLuong, maHang
+                }
+            })
+                .then((response) => {
+                    console.log(response.data)
+                    var content = "";
+                        for (const item of response.data.carts) {
+                            content += `<tr>
+                                                        <th scope="row">${item.maHang}</th>
+                                                        <td>${item.tenHang}</td>
+                                                        <td>${item.gia}</td>
+                                                        <td>
+                                                            <div class="number-input">
+                                                                <button onclick="this.parentNode.querySelector('input[type=number]').stepDown(); UpdateQuantity(this.parentNode.querySelector('input[type=number]'), '${item.maHang}');"></button>
+                                                                <input type="number" min="1" id="soluong" name="soluong" onchange="UpdateQuantity(this, '${item.maHang}')" value="${item.soluong}">
+                                                                <button onclick="this.parentNode.querySelector('input[type=number]').stepUp(); UpdateQuantity(this.parentNode.querySelector('input[type=number]'), '${item.maHang}');" class="plus"></button>
+                                                            </div>
+                                                        </td>
+                                                        <td>${(item.gia * item.soluong)}</td>
+                                                        <td><button class="btn btn-warning btn-cancelSingle" onclick="CancelSingle('${item.maHang}')">X</button></td>
+                                            </tr>`
+                        }
+                        document.getElementById("cart-data").innerHTML = content
+                        document.getElementById("tongTien").innerHTML = response.data.sum
+                })
+        }
+    </script>
 </body>
 
 </html>

@@ -65,6 +65,7 @@ namespace ProjectPRN211.Models
 
                 entity.Property(e => e.MaChiTietHd)
                     .HasColumnType("numeric(18, 0)")
+                    .ValueGeneratedOnAdd()
                     .HasColumnName("MaChiTietHD");
 
                 entity.Property(e => e.MaHang)
@@ -108,6 +109,7 @@ namespace ProjectPRN211.Models
 
                 entity.Property(e => e.MaHd)
                     .HasColumnType("numeric(18, 0)")
+                    .ValueGeneratedOnAdd()
                     .HasColumnName("MaHD");
 
                 entity.Property(e => e.MaKh)
@@ -117,7 +119,8 @@ namespace ProjectPRN211.Models
 
                 entity.Property(e => e.NgayHd)
                     .HasColumnType("smalldatetime")
-                    .HasColumnName("NgayHD");
+                    .HasColumnName("NgayHD")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.HasOne(d => d.MaKhNavigation)
                     .WithMany(p => p.TblHoaDons)

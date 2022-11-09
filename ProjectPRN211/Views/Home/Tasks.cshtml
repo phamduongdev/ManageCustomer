@@ -223,7 +223,6 @@
                                             </tr>
                                         </thead>
                                         <tbody id="invoice-data">
-                                            
                                         </tbody>
                                     </table>
                                 </div>
@@ -306,27 +305,27 @@
                 axios.get("GetUpdateData")
                     .then((response) => {
                         var content = `<table class="table table-hover table-bordered">
-                                                                                                                                                                                                       <thead>
-                                                                                                                                                                                                          <tr>
-                                                                                                                                                                                                              <th scope="col">MaHang</th>
-                                                                                                                                                                                                               <th scope="col">TenHang</th>
-                                                                                                                                                                                                               <th scope="col">DVT</th>
-                                                                                                                                                                                                               <th scope="col">Gia</th>
-                                                                                                                                                                                                           </tr>
-                                                                                                                                                                                                       </thead>
-                                                                                                                                                                                                        <tbody>`;
+                                                                                                                                                                                                                       <thead>
+                                                                                                                                                                                                                          <tr>
+                                                                                                                                                                                                                              <th scope="col">MaHang</th>
+                                                                                                                                                                                                                               <th scope="col">TenHang</th>
+                                                                                                                                                                                                                               <th scope="col">DVT</th>
+                                                                                                                                                                                                                               <th scope="col">Gia</th>
+                                                                                                                                                                                                                           </tr>
+                                                                                                                                                                                                                       </thead>
+                                                                                                                                                                                                                        <tbody>`;
                         for (const item of response.data) {
                             content += `<tr onclick="CellClick('${item.maHang}','${item.tenHang}','${item.dvt}','${item.gia}')">
-                                                                                                                                                                                                                                                                                        <td>${item.maHang}</td>
-                                                                                                                                                                                                                                                                                        <td>${item.tenHang}</td>
-                                                                                                                                                                                                                                                                                        <td>${item.dvt}</td>
-                                                                                                                                                                                                                                                                                        <td>${item.gia}</td>
-                                                                                                                                                                                                                                                                                                <td>
-                                                                                                                                                                                                                                                                                                        <button class="btn btn-info" onclick="AddToCart('${item.maHang}','${item.tenHang}','${item.dvt}','${item.gia}')">Add To Cart</button></td>
-                                                                                                                                                                                                                                                                                        </tr>`;
+                                                                                                                                                                                                                                                                                                        <td>${item.maHang}</td>
+                                                                                                                                                                                                                                                                                                        <td>${item.tenHang}</td>
+                                                                                                                                                                                                                                                                                                        <td>${item.dvt}</td>
+                                                                                                                                                                                                                                                                                                        <td>${item.gia}</td>
+                                                                                                                                                                                                                                                                                                                <td>
+                                                                                                                                                                                                                                                                                                                        <button class="btn btn-info" onclick="AddToCart('${item.maHang}','${item.tenHang}','${item.dvt}','${item.gia}')">Add To Cart</button></td>
+                                                                                                                                                                                                                                                                                                        </tr>`;
                         }
                         content += `</tbody>
-                                                                                                                                                            </table>`;
+                                                                                                                                                                            </table>`;
                         document.getElementById("product-data").innerHTML = content;
                     });
             }, 1000);
@@ -372,7 +371,7 @@
         }
 
         function AddToCart(maHang, tenHang, dvt, gia) {
-            axios.get("AddToCart" ,{
+            axios.get("AddToCart", {
                 params: {
                     maHang, tenHang, dvt, gia, soLuong: 1
                 }
@@ -409,25 +408,25 @@
                             .then((response) => {
                                 if (response.data.length !== undefined) {
                                     var content = `<table class="table table-hover table-bordered">
-                                                                                                                                                                                                               <thead>
-                                                                                                                                                                                                                  <tr>
-                                                                                                                                                                                                                      <th scope="col">MaHang</th>
-                                                                                                                                                                                                                       <th scope="col">TenHang</th>
-                                                                                                                                                                                                                       <th scope="col">DVT</th>
-                                                                                                                                                                                                                       <th scope="col">Gia</th>
-                                                                                                                                                                                                                   </tr>
-                                                                                                                                                                                                               </thead>
-                                                                                                                                                                                                                <tbody>`;
+                                                                                                                                                                                                                               <thead>
+                                                                                                                                                                                                                                  <tr>
+                                                                                                                                                                                                                                      <th scope="col">MaHang</th>
+                                                                                                                                                                                                                                       <th scope="col">TenHang</th>
+                                                                                                                                                                                                                                       <th scope="col">DVT</th>
+                                                                                                                                                                                                                                       <th scope="col">Gia</th>
+                                                                                                                                                                                                                                   </tr>
+                                                                                                                                                                                                                               </thead>
+                                                                                                                                                                                                                                <tbody>`;
                                     for (const item of response.data) {
                                         content += `<tr onclick="CellClick('${item.maHang}','${item.tenHang}','${item.dvt}','${item.gia}')">
-                                                                                                                                                                                                                                                                                                <td>${item.maHang}</td>
-                                                                                                                                                                                                                                                                                                <td>${item.tenHang}</td>
-                                                                                                                                                                                                                                                                                                <td>${item.dvt}</td>
-                                                                                                                                                                                                                                                                                                <td>${item.gia}</td>
-                                                                                                                                                                                                                                                                                                </tr>`;
+                                                                                                                                                                                                                                                                                                                <td>${item.maHang}</td>
+                                                                                                                                                                                                                                                                                                                <td>${item.tenHang}</td>
+                                                                                                                                                                                                                                                                                                                <td>${item.dvt}</td>
+                                                                                                                                                                                                                                                                                                                <td>${item.gia}</td>
+                                                                                                                                                                                                                                                                                                                </tr>`;
                                     }
                                     content += `</tbody>
-                                                                                                                                                                    </table>`;
+                                                                                                                                                                                    </table>`;
                                     document.getElementById("product-data").innerHTML = content;
                                 } else {
                                     throw response;
@@ -438,25 +437,25 @@
                                 var raw = RawUpdateTab();
                                 raw.then((response) => {
                                     var content = `<table class="table table-hover table-bordered">
-                                                                                                                                                                                                               <thead>
-                                                                                                                                                                                                                  <tr>
-                                                                                                                                                                                                                      <th scope="col">MaHang</th>
-                                                                                                                                                                                                                       <th scope="col">TenHang</th>
-                                                                                                                                                                                                                       <th scope="col">DVT</th>
-                                                                                                                                                                                                                       <th scope="col">Gia</th>
-                                                                                                                                                                                                                   </tr>
-                                                                                                                                                                                                               </thead>
-                                                                                                                                                                                                                <tbody>`;
+                                                                                                                                                                                                                               <thead>
+                                                                                                                                                                                                                                  <tr>
+                                                                                                                                                                                                                                      <th scope="col">MaHang</th>
+                                                                                                                                                                                                                                       <th scope="col">TenHang</th>
+                                                                                                                                                                                                                                       <th scope="col">DVT</th>
+                                                                                                                                                                                                                                       <th scope="col">Gia</th>
+                                                                                                                                                                                                                                   </tr>
+                                                                                                                                                                                                                               </thead>
+                                                                                                                                                                                                                                <tbody>`;
                                     for (const item of response) {
                                         content += `<tr onclick="CellClick('${item.maHang}','${item.tenHang}','${item.dvt}','${item.gia}')">
-                                                                                                                                                                                                                                                                                                <td>${item.maHang}</td>
-                                                                                                                                                                                                                                                                                                <td>${item.tenHang}</td>
-                                                                                                                                                                                                                                                                                                <td>${item.dvt}</td>
-                                                                                                                                                                                                                                                                                                <td>${item.gia}</td>
-                                                                                                                                                                                                                                                                                                </tr>`;
+                                                                                                                                                                                                                                                                                                                <td>${item.maHang}</td>
+                                                                                                                                                                                                                                                                                                                <td>${item.tenHang}</td>
+                                                                                                                                                                                                                                                                                                                <td>${item.dvt}</td>
+                                                                                                                                                                                                                                                                                                                <td>${item.gia}</td>
+                                                                                                                                                                                                                                                                                                                </tr>`;
                                     }
                                     content += `</tbody>
-                                                                                                                                                                    </table>`;
+                                                                                                                                                                                    </table>`;
                                     document.getElementById("product-data").innerHTML = content;
                                 })
                             });
@@ -490,25 +489,25 @@
             })
                 .then((response) => {
                     var content = `<table class="table table-hover table-bordered">
-                                                                                                                                                                                                                       <thead>
-                                                                                                                                                                                                                          <tr>
-                                                                                                                                                                                                                              <th scope="col">MaHang</th>
-                                                                                                                                                                                                                               <th scope="col">TenHang</th>
-                                                                                                                                                                                                                               <th scope="col">DVT</th>
-                                                                                                                                                                                                                               <th scope="col">Gia</th>
-                                                                                                                                                                                                                           </tr>
-                                                                                                                                                                                                                       </thead>
-                                                                                                                                                                                                                        <tbody>`;
+                                                                                                                                                                                                                                       <thead>
+                                                                                                                                                                                                                                          <tr>
+                                                                                                                                                                                                                                              <th scope="col">MaHang</th>
+                                                                                                                                                                                                                                               <th scope="col">TenHang</th>
+                                                                                                                                                                                                                                               <th scope="col">DVT</th>
+                                                                                                                                                                                                                                               <th scope="col">Gia</th>
+                                                                                                                                                                                                                                           </tr>
+                                                                                                                                                                                                                                       </thead>
+                                                                                                                                                                                                                                        <tbody>`;
                     for (const item of response.data) {
                         content += `<tr onclick="CellClick('${item.maHang}','${item.tenHang}','${item.dvt}','${item.gia}')">
-                                                                                                                                                                                                                                                                                                        <td>${item.maHang}</td>
-                                                                                                                                                                                                                                                                                                        <td>${item.tenHang}</td>
-                                                                                                                                                                                                                                                                                                        <td>${item.dvt}</td>
-                                                                                                                                                                                                                                                                                                        <td>${item.gia}</td>
-                                                                                                                                                                                                                                                                                                        </tr>`;
+                                                                                                                                                                                                                                                                                                                        <td>${item.maHang}</td>
+                                                                                                                                                                                                                                                                                                                        <td>${item.tenHang}</td>
+                                                                                                                                                                                                                                                                                                                        <td>${item.dvt}</td>
+                                                                                                                                                                                                                                                                                                                        <td>${item.gia}</td>
+                                                                                                                                                                                                                                                                                                                        </tr>`;
                     }
                     content += `</tbody>
-                                                                                                                                                                            </table>`;
+                                                                                                                                                                                            </table>`;
                     document.getElementById("product-data").innerHTML = content;
                 });
             document.getElementById("mahang").value = ""
@@ -618,7 +617,7 @@
             }
         }
 
-        function FillInvoice(){
+        function FillInvoice() {
             document.getElementById("datmua").disabled = true;
             clearTimeout(timesUp)
             var maKH = document.getElementById("makhachhang").value.trim()
@@ -632,21 +631,21 @@
                     })
                         .then((response) => {
                             if (response.data.length >= 1) {
-                            var content = "";
-                            for (const item of response.data) {
-                                var date = item.ngayMua;
-                                var ngayMua = new Date(date).toLocaleDateString("en-GB");
+                                var content = "";
+                                for (const item of response.data) {
+                                    var date = item.ngayMua;
+                                    var ngayMua = new Date(date).toLocaleDateString("en-GB");
                                     content += `<tr onclick="CellClickInvoice('${item.maKH}', '${item.maHang}', '${item.tenHang}', ${item.gia}, ${item.soluong})">
-                                                <td>${item.maHang}</td>
-                                                <td>${ngayMua}</td>
-                                                <td>${item.tenHang}</td>
-                                                <td>${item.dvt}</td>
-                                                <td>${item.gia}</td>
-                                                <td>${item.soluong}</td>
-                                            </tr>`
-                            }
-                            document.getElementById("invoice-data").innerHTML = content;
-                            }else{
+                                                                <td>${item.maHang}</td>
+                                                                <td>${ngayMua}</td>
+                                                                <td>${item.tenHang}</td>
+                                                                <td>${item.dvt}</td>
+                                                                <td>${item.gia}</td>
+                                                                <td>${item.soluong}</td>
+                                                            </tr>`
+                                }
+                                document.getElementById("invoice-data").innerHTML = content;
+                            } else {
                                 document.getElementById("datmua").disabled = false;
                             }
                         })
@@ -659,7 +658,7 @@
         var tenHang
         var gia
         var soLuong
-        function CellClickInvoice(maKH, maHang, tenHang, gia, soLuong){
+        function CellClickInvoice(maKH, maHang, tenHang, gia, soLuong) {
             maKH = maKH
             maHang = maHang
             tenHang = tenHang
@@ -670,66 +669,43 @@
             document.getElementById("soluongInvoice").value = soLuong;
         }
 
-        function CheckOut(){
-            var rows = document.getElementById("invoice-data").rows;
-            var data = [];
-            Object.keys(rows).forEach(indexrow => {
-                data.push(
-                    {
-                    name: document.getElementById("invoice-data").rows[indexrow].cells[0].innerHTML,
-                    age: document.getElementById("invoice-data").rows[indexrow].cells[1].innerHTML
-                }
-                );
-            });
-            const data_order = JSON.stringify(data)
-            console.log(data_order)
-            axios.get("CheckOut", {
-                params:{
-                    data_order
-                }
-            })
-            .then((response) => {
-                console.log(response.data)
-            })
-        }
-        
         function ReportData() {
             document.getElementById("product-report-data").innerHTML = "Loading data...";
             setTimeout(() => {
                 axios.get("GetReportData")
                     .then((response) => {
                         var content = `<table class="table table-hover table-bordered">
-                                                                                                                                                                                                                                                                                        <thead>
-                                                                                                                                                                                                                                                                                            <tr>
-                                                                                                                                                                                                                                                                                                <th scope="col">MaHD</th>
-                                                                                                                                                                                                                                                                                                <th scope="col">NgayHD</th>
-                                                                                                                                                                                                                                                                                                <th scope="col">MaKH</th>
-                                                                                                                                                                                                                                                                                                <th scope="col">TenKH</th>
-                                                                                                                                                                                                                                                                                                <th scope="col">MaHang</th>
-                                                                                                                                                                                                                                                                                                <th scope="col">TenHang</th>
-                                                                                                                                                                                                                                                                                                <th scope="col">DVT</th>
-                                                                                                                                                                                                                                                                                                <th scope="col">Gia</th>
-                                                                                                                                                                                                                                                                                                <th scope="col">Soluong</th>
-                                                                                                                                                                                                                                                                                            </tr>
-                                                                                                                                                                                                                                                                                        </thead>
-                                                                                                                                                                                                                                                                                        <tbody>`;
+                                                                                                                                                                                                                                                                                                        <thead>
+                                                                                                                                                                                                                                                                                                            <tr>
+                                                                                                                                                                                                                                                                                                                <th scope="col">MaHD</th>
+                                                                                                                                                                                                                                                                                                                <th scope="col">NgayHD</th>
+                                                                                                                                                                                                                                                                                                                <th scope="col">MaKH</th>
+                                                                                                                                                                                                                                                                                                                <th scope="col">TenKH</th>
+                                                                                                                                                                                                                                                                                                                <th scope="col">MaHang</th>
+                                                                                                                                                                                                                                                                                                                <th scope="col">TenHang</th>
+                                                                                                                                                                                                                                                                                                                <th scope="col">DVT</th>
+                                                                                                                                                                                                                                                                                                                <th scope="col">Gia</th>
+                                                                                                                                                                                                                                                                                                                <th scope="col">Soluong</th>
+                                                                                                                                                                                                                                                                                                            </tr>
+                                                                                                                                                                                                                                                                                                        </thead>
+                                                                                                                                                                                                                                                                                                        <tbody>`;
                         for (const item of response.data) {
                             var date = item.ngayHD;
                             var ngayHD = new Date(date).toLocaleDateString("en-GB");
                             content += `<tr>
-                                                                                                                                                                                                                                                                                                <td>${item.maHd}</td>
-                                                                                                                                                                                                                                                                                                <td>${ngayHD}</td>
-                                                                                                                                                                                                                                                                                                <td>${item.maKH}</td>
-                                                                                                                                                                                                                                                                                                <td>${item.tenKH}</td>
-                                                                                                                                                                                                                                                                                                <td>${item.maHang}</td>
-                                                                                                                                                                                                                                                                                                <td>${item.tenHang}</td>
-                                                                                                                                                                                                                                                                                                <td>${item.dvt}</td>
-                                                                                                                                                                                                                                                                                                <td>${item.gia}</td>
-                                                                                                                                                                                                                                                                                                <td>${item.soluong}</td>
-                                                                                                                                                                                                                                                                                            </tr>`;
+                                                                                                                                                                                                                                                                                                                <td>${item.maHd}</td>
+                                                                                                                                                                                                                                                                                                                <td>${ngayHD}</td>
+                                                                                                                                                                                                                                                                                                                <td>${item.maKH}</td>
+                                                                                                                                                                                                                                                                                                                <td>${item.tenKH}</td>
+                                                                                                                                                                                                                                                                                                                <td>${item.maHang}</td>
+                                                                                                                                                                                                                                                                                                                <td>${item.tenHang}</td>
+                                                                                                                                                                                                                                                                                                                <td>${item.dvt}</td>
+                                                                                                                                                                                                                                                                                                                <td>${item.gia}</td>
+                                                                                                                                                                                                                                                                                                                <td>${item.soluong}</td>
+                                                                                                                                                                                                                                                                                                            </tr>`;
                         }
                         content += `</tbody>
-                                                                                                                                                                                                                                                                            </table>`;
+                                                                                                                                                                                                                                                                                            </table>`;
                         document.getElementById("product-report-data").innerHTML = content;
                     });
             }, 1000);
@@ -770,37 +746,37 @@
                     })
                         .then((response) => {
                             var content = `<table class="table table-hover table-bordered">
-                                                                                                                                                                                                                                                                                                <thead>
-                                                                                                                                                                                                                                                                                                    <tr>
-                                                                                                                                                                                                                                                                                                        <th scope="col">MaHD</th>
-                                                                                                                                                                                                                                                                                                        <th scope="col">NgayHD</th>
-                                                                                                                                                                                                                                                                                                      <th scope="col">MaKH</th>
-                                                                                                                                                                                                                                                                                                     <th scope="col">TenKH</th>
-                                                                                                                                                                                                                                                                                                      <th scope="col">MaHang</th>
-                                                                                                                                                                                                                                                                                                        <th scope="col">TenHang</th>
-                                                                                                                                                                                                                                                                                                      <th scope="col">DVT</th>
-                                                                                                                                                                                                                                                                                                        <th scope="col">Gia</th>
-                                                                                                                                                                                                                                                                                                      <th scope="col">Soluong</th>
-                                                                                                                                                                                                                                                                                                   </tr>
-                                                                                                                                                                                                                                                                                               </thead>
-                                                                                                                                                                                                                                                                                                <tbody>`;
+                                                                                                                                                                                                                                                                                                                <thead>
+                                                                                                                                                                                                                                                                                                                    <tr>
+                                                                                                                                                                                                                                                                                                                        <th scope="col">MaHD</th>
+                                                                                                                                                                                                                                                                                                                        <th scope="col">NgayHD</th>
+                                                                                                                                                                                                                                                                                                                      <th scope="col">MaKH</th>
+                                                                                                                                                                                                                                                                                                                     <th scope="col">TenKH</th>
+                                                                                                                                                                                                                                                                                                                      <th scope="col">MaHang</th>
+                                                                                                                                                                                                                                                                                                                        <th scope="col">TenHang</th>
+                                                                                                                                                                                                                                                                                                                      <th scope="col">DVT</th>
+                                                                                                                                                                                                                                                                                                                        <th scope="col">Gia</th>
+                                                                                                                                                                                                                                                                                                                      <th scope="col">Soluong</th>
+                                                                                                                                                                                                                                                                                                                   </tr>
+                                                                                                                                                                                                                                                                                                               </thead>
+                                                                                                                                                                                                                                                                                                                <tbody>`;
                             for (const item of response.data) {
                                 var date = item.ngayHD;
                                 var ngayHD = new Date(date).toLocaleDateString("en-GB");
                                 content += `<tr>
-                                                                                                                                                                                                                                                                                                        <td>${item.maHd}</td>
-                                                                                                                                                                                                                                                                                                        <td>${ngayHD}</td>
-                                                                                                                                                                                                                                                                                                        <td>${item.maKH}</td>
-                                                                                                                                                                                                                                                                                                        <td>${item.tenKH}</td>
-                                                                                                                                                                                                                                                                                                        <td>${item.maHang}</td>
-                                                                                                                                                                                                                                                                                                        <td>${item.tenHang}</td>
-                                                                                                                                                                                                                                                                                                        <td>${item.dvt}</td>
-                                                                                                                                                                                                                                                                                                        <td>${item.gia}</td>
-                                                                                                                                                                                                                                                                                                        <td>${item.soluong}</td>
-                                                                                                                                                                                                                                                                                                    </tr>`;
+                                                                                                                                                                                                                                                                                                                        <td>${item.maHd}</td>
+                                                                                                                                                                                                                                                                                                                        <td>${ngayHD}</td>
+                                                                                                                                                                                                                                                                                                                        <td>${item.maKH}</td>
+                                                                                                                                                                                                                                                                                                                        <td>${item.tenKH}</td>
+                                                                                                                                                                                                                                                                                                                        <td>${item.maHang}</td>
+                                                                                                                                                                                                                                                                                                                        <td>${item.tenHang}</td>
+                                                                                                                                                                                                                                                                                                                        <td>${item.dvt}</td>
+                                                                                                                                                                                                                                                                                                                        <td>${item.gia}</td>
+                                                                                                                                                                                                                                                                                                                        <td>${item.soluong}</td>
+                                                                                                                                                                                                                                                                                                                    </tr>`;
                             }
                             content += `</tbody>
-                                                                                                                                                                                                                                                                                   </table>`;
+                                                                                                                                                                                                                                                                                                   </table>`;
                             document.getElementById("product-report-data").innerHTML = content;
                         })
                         .catch((error) => {
