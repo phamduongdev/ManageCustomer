@@ -11,11 +11,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <link rel="stylesheet" href="~/css/main.css" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 </head>
 
 <body>
+    <header class="home-header-wrapper">
+        <a asp-controller="Cart" asp-action="CartDetail" class="header-cart">
+            <p>Cart</p>
+            <span id="cart_number"></span>
+        </a>
+        <a href="">
+            <p>Orders</p>
+        </a>
+    </header>
     <div class="home-wrapper">
         <header>
             <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
@@ -197,7 +207,7 @@
                                 </div>
                                 <div class="col-1 invoice-actions">
                                     <button class="btn btn-info">>></button>
-                                    <button class="btn btn-info"><<</button>
+                                    <button class="btn btn-info" onclick="CancelInvoice()"><<</button>
                                 </div>
                                 <div class="col-6">
                                     <h5 class="text-black">Danh sách hàng mua:</h5>
@@ -220,6 +230,7 @@
                             </div>
                         </div>
                     </div>
+                    <button onclick="CheckOut()">add</button>
                 </div>
                 <div class="tab-pane fade" id="pills-report" role="tabpanel"
                      aria-labelledby="pills-report-tab" tabindex="0">
@@ -288,6 +299,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.1.3/axios.min.js" integrity="sha512-0qU9M9jfqPw6FKkPafM3gy2CBAvUWnYVOfNPDYKVuRTel1PrciTj+a9P3loJB+j0QmN2Y0JYQmkBBS8W+mbezg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
     <script>
+        document.getElementById("cart_number").style.visibility = "hidden";
         function UpdateTab() {
             document.getElementById("product-data").innerHTML = "Loading data...";
             setTimeout(() => {
@@ -309,6 +321,8 @@
                                                                                                                                                                                                                                                                                         <td>${item.tenHang}</td>
                                                                                                                                                                                                                                                                                         <td>${item.dvt}</td>
                                                                                                                                                                                                                                                                                         <td>${item.gia}</td>
+                                                                                                                                                                                                                                                                                                <td>
+                                                                                                                                                                                                                                                                                                        <button class="btn btn-info" onclick="AddToCart('${item.maHang}','${item.tenHang}','${item.dvt}','${item.gia}')">Add To Cart</button></td>
                                                                                                                                                                                                                                                                                         </tr>`;
                         }
                         content += `</tbody>
@@ -355,6 +369,17 @@
             document.getElementById("tenhang").value = tenHang;
             document.getElementById("donvi").value = dvt;
             document.getElementById("giaban").value = gia;
+        }
+
+        function AddToCart(maHang, tenHang, dvt, gia) {
+            axios.get("AddToCart" ,{
+                params: {
+                    maHang, tenHang, dvt, gia, soLuong: 1
+                }
+            }).then((response) => {
+                document.getElementById("cart_number").style.visibility = "visible";
+                document.getElementById("cart_number").innerHTML = response.data
+            })
         }
 
         function isDisabled(input) {
@@ -606,7 +631,6 @@
                         }
                     })
                         .then((response) => {
-                            console.log(response.data)
                             if (response.data.length >= 1) {
                             var content = "";
                             for (const item of response.data) {
@@ -646,6 +670,29 @@
             document.getElementById("soluongInvoice").value = soLuong;
         }
 
+        function CheckOut(){
+            var rows = document.getElementById("invoice-data").rows;
+            var data = [];
+            Object.keys(rows).forEach(indexrow => {
+                data.push(
+                    {
+                    name: document.getElementById("invoice-data").rows[indexrow].cells[0].innerHTML,
+                    age: document.getElementById("invoice-data").rows[indexrow].cells[1].innerHTML
+                }
+                );
+            });
+            const data_order = JSON.stringify(data)
+            console.log(data_order)
+            axios.get("CheckOut", {
+                params:{
+                    data_order
+                }
+            })
+            .then((response) => {
+                console.log(response.data)
+            })
+        }
+        
         function ReportData() {
             document.getElementById("product-report-data").innerHTML = "Loading data...";
             setTimeout(() => {

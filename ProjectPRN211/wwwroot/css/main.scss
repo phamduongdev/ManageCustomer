@@ -23,6 +23,22 @@
 }
 
 /* home */
+.home-header-wrapper {
+    display: flex;
+    a{
+        padding: 10px 10px 0 20px;
+    }
+    .header-cart {
+        position: relative;
+
+        span {
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+    }
+}
+
 .home-wrapper {
     background-color: grey;
     height: 100%;
@@ -158,7 +174,7 @@ select {
 }
 
 .product-order {
-    width:70%;
+    width: 70%;
 }
 
 .product-report-list-actions {

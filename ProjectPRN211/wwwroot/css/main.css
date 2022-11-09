@@ -23,6 +23,21 @@
 }
 
 /* home */
+.home-header-wrapper {
+  display: flex;
+}
+.home-header-wrapper a {
+  padding: 10px 10px 0 20px;
+}
+.home-header-wrapper .header-cart {
+  position: relative;
+}
+.home-header-wrapper .header-cart span {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
 .home-wrapper {
   background-color: grey;
   height: 100%;

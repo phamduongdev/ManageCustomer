@@ -13,6 +13,7 @@ namespace ProjectPRN211.Models
         {
         }
 
+        public virtual DbSet<TblCart> TblCarts { get; set; } = null!;
         public virtual DbSet<TblChiTietHd> TblChiTietHds { get; set; } = null!;
         public virtual DbSet<TblDonViTinh> TblDonViTinhs { get; set; } = null!;
         public virtual DbSet<TblHoaDon> TblHoaDons { get; set; } = null!;
@@ -22,18 +23,39 @@ namespace ProjectPRN211.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-                var builder = new ConfigurationBuilder()
-                                              .SetBasePath(Directory.GetCurrentDirectory())
-                                              .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-                IConfigurationRoot configuration = builder.Build();
-                optionsBuilder.UseSqlServer(configuration.GetConnectionString("MyCnn"));
-            }
+            var builder = new ConfigurationBuilder()
+                              .SetBasePath(Directory.GetCurrentDirectory())
+                              .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+            IConfigurationRoot configuration = builder.Build();
+            optionsBuilder.UseSqlServer(configuration.GetConnectionString("MyCnn"));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<TblCart>(entity =>
+            {
+                entity.HasKey(e => e.MaHang)
+                    .HasName("PK__tblCart__19C0DB1DA236C044");
+
+                entity.ToTable("tblCart");
+
+                entity.Property(e => e.MaHang)
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Dvt)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("DVT");
+
+                entity.Property(e => e.TenHang).HasMaxLength(50);
+
+                entity.HasOne(d => d.DvtNavigation)
+                    .WithMany(p => p.TblCarts)
+                    .HasForeignKey(d => d.Dvt)
+                    .HasConstraintName("FK__tblCart__Soluong__3B75D760");
+            });
+
             modelBuilder.Entity<TblChiTietHd>(entity =>
             {
                 entity.HasKey(e => e.MaChiTietHd)
