@@ -8,11 +8,13 @@
         }
 
         public string MaHang { get; set; } = null!;
-        public string? TenHang { get; set; }
-        public string? Dvt { get; set; }
-        public float? Gia { get; set; }
+        public string TenHang { get; set; } = null!;
+        public string Dvt { get; set; } = null!;
+        public float Gia { get; set; }
+        public int CategoryId { get; set; }
 
-        public virtual TblDonViTinh? DvtNavigation { get; set; }
+        public virtual TblCategory Category { get; set; } = null!;
+        public virtual TblDonViTinh DvtNavigation { get; set; } = null!;
         public virtual ICollection<TblChiTietHd> TblChiTietHds { get; set; }
     }
 }

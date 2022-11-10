@@ -2,7 +2,7 @@
 {
     public partial class TblUser
     {
-        public string? Username { get; set; }
-        public int? Pass { get; set; }
+        public string Username { get; set; } = null!;
+        public int Pass { get; set; }
     }
 }

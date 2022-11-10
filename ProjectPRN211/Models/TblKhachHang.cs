@@ -8,7 +8,7 @@
         }
 
         public string MaKh { get; set; } = null!;
-        public string? TenKh { get; set; }
+        public string TenKh { get; set; } = null!;
         public bool? Gt { get; set; }
         public string? Diachi { get; set; }
         public DateTime? NgaySinh { get; set; }

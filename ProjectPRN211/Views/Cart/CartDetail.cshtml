@@ -47,7 +47,7 @@
                                         <button onclick="this.parentNode.querySelector('input[type=number]').stepUp(); UpdateQuantity(this.parentNode.querySelector('input[type=number]'), '@item.MaHang');" class="plus"></button>
                                     </div>
                                 </td>
-                                <td id="tong">@(item.Gia * item.Soluong)</td>
+                                <td id="tong">$@(item.Gia * item.Soluong)</td>
                                 <td><button class="btn btn-warning btn-cancelSingle" onclick="CancelSingle('@item.MaHang')">X</button></td>
                             </tr>
                         }
@@ -56,7 +56,7 @@
                 <button class="btn btn-danger btn-cancelAll" onclick="CancelAll()">Clear All</button>
                 <div class="d-flex justify-content-end">
                     <form id="frm">
-                        <h1 class="text-end">Số tiền phải trả: <span id="tongTien">@ViewBag.Sum</span></h1>
+                        <h1 class="text-end">Số tiền phải trả: <span id="tongTien">$@ViewBag.Sum</span></h1>
                         <input type="text" id="maKH" placeholder="Nhap ma khach hang..." />
                         <br />
                         <input type="text" id="tenKH" placeholder="Nhap ten khach hang..." />
@@ -142,7 +142,7 @@
                                                         <button onclick="this.parentNode.querySelector('input[type=number]').stepUp(); UpdateQuantity(this.parentNode.querySelector('input[type=number]'), '${item.maHang}');" class="plus"></button>
                                                     </div>
                                                 </td>
-                                                <td>${(item.gia * item.soluong)}</td>
+                                                <td>$${(item.gia * item.soluong)}</td>
                                                 <td><button class="btn btn-warning btn-cancelSingle" onclick="CancelSingle('${item.maHang}')">X</button></td>
                                     </tr>`
                         }
@@ -189,7 +189,7 @@
                                                                 <button onclick="this.parentNode.querySelector('input[type=number]').stepUp(); UpdateQuantity(this.parentNode.querySelector('input[type=number]'), '${item.maHang}');" class="plus"></button>
                                                             </div>
                                                         </td>
-                                                        <td>${(item.gia * item.soluong)}</td>
+                                                        <td>$${(item.gia * item.soluong)}</td>
                                                         <td><button class="btn btn-warning btn-cancelSingle" onclick="CancelSingle('${item.maHang}')">X</button></td>
                                             </tr>`
                         }

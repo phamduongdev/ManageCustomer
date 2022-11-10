@@ -7,7 +7,5 @@
         public string? Dvt { get; set; }
         public float? Gia { get; set; }
         public int? Soluong { get; set; }
-
-        public virtual TblDonViTinh? DvtNavigation { get; set; }
     }
 }

@@ -11,6 +11,8 @@ namespace ProjectPRN211.Controllers
         {
             ViewBag.listGVT = context.TblDonViTinhs.ToList();
             ViewBag.listMatHang = context.TblMatHangs.ToList();
+            ViewBag.Carts = context.TblCarts.ToList().Count;
+            ViewBag.Categories = context.TblCategories.ToList();
             return View();
         }
 

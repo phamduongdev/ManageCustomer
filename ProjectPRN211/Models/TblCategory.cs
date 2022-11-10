@@ -1,13 +1,14 @@
 ﻿namespace ProjectPRN211.Models
 {
-    public partial class TblDonViTinh
+    public partial class TblCategory
     {
-        public TblDonViTinh()
+        public TblCategory()
         {
             TblMatHangs = new HashSet<TblMatHang>();
         }
 
-        public string Dvt { get; set; } = null!;
+        public int CategoryId { get; set; }
+        public string CategoryName { get; set; } = null!;
 
         public virtual ICollection<TblMatHang> TblMatHangs { get; set; }
     }
