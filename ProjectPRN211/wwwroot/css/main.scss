@@ -11937,21 +11937,18 @@ body {
     justify-content: center;
 }
 
-/* home */
-.home-header-wrapper {
-    display: flex;
+.shop-wrapper {
+    .list-group-item {
+        &.active {
+            background-color: pink;
+            border: none !important;
+        }
 
-    a {
-        padding: 10px 10px 0 20px;
-    }
+        cursor: pointer;
+        transition: all 0.3s;
 
-    .header-cart {
-        position: relative;
-
-        span {
-            position: absolute;
-            top: 0;
-            right: 0;
+        &:hover {
+            background-color: pink;
         }
     }
 }
@@ -12106,6 +12103,10 @@ select {
         padding: 20px;
         border: 1px solid;
     }
+}
+
+section#cart-wrapper, section.order-wrapper.container {
+    min-height: 537px;
 }
 
 input[type="number"] {

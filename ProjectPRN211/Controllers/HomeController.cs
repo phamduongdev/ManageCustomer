@@ -11,7 +11,7 @@ namespace ProjectPRN211.Controllers
         {
             ViewBag.listGVT = context.TblDonViTinhs.ToList();
             ViewBag.listMatHang = context.TblMatHangs.ToList();
-            ViewBag.Carts = context.TblCarts.ToList().Count;
+            ViewBag.Size = context.TblCarts.ToList().Count;
             ViewBag.Categories = context.TblCategories.ToList();
             return View();
         }
@@ -193,6 +193,17 @@ namespace ProjectPRN211.Controllers
                 Gia = context.TblMatHangs.FirstOrDefault(x => x.MaHang == item.MaHang).Gia,
                 Soluong = item.Soluong
             }).Where(item => item.MaHd == Convert.ToInt32(maHD) && item.MaKH == maKH).ToList();
+            return Json(data);
+        }
+
+        public JsonResult FillterProduct(string categoryId)
+        {
+            var data = context.TblMatHangs.ToList();
+            if (int.Parse(categoryId) != 0)
+            {
+                data = data.Where(item => item.CategoryId == int.Parse(categoryId)).ToList();
+            }
+            ViewBag.CategoryId = categoryId;
             return Json(data);
         }
     }

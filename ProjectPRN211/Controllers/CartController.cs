@@ -55,13 +55,14 @@ namespace ProjectPRN211.Controllers
                     context.TblChiTietHds.Add(chiTiet);
                     context.SaveChanges();
                 }
+                context.TblCarts.RemoveRange(context.TblCarts.ToList());
+                context.SaveChanges();
             }
             catch (Exception ex)
             {
                 return Json("Error " + ex.Message);
             }
-            var data = context.TblCarts.ToList();
-            return Json(data);
+            return Json("OK");
         }
 
         public JsonResult CancelSingle(string maHang)
