@@ -9,16 +9,34 @@ namespace ProjectPRN211.Controllers
         MyOrderContext context = new MyOrderContext();
         public IActionResult Tasks()
         {
-            ViewBag.listGVT = context.TblDonViTinhs.ToList();
-            ViewBag.listMatHang = context.TblMatHangs.ToList();
-            ViewBag.Size = context.TblCarts.ToList().Count;
-            ViewBag.Categories = context.TblCategories.ToList();
-            return View();
+            //ViewBag.listMatHang = context.TblMatHangs.OrderBy(item => item.TenHang).ToList();
+            string name = HttpContext.Session.GetString("username");
+            if (!string.IsNullOrEmpty(name))
+            {
+                ViewBag.listGVT = context.TblDonViTinhs.ToList();
+                ViewBag.listMatHang = context.TblMatHangs.ToList();
+                ViewBag.Size = context.TblCarts.ToList().Count;
+                ViewBag.Categories = context.TblCategories.ToList();
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login", "Login");
+            }
         }
 
         public JsonResult GetUpdateData()
         {
-            var data = context.TblMatHangs.ToList();
+            //var data = context.TblMatHangs.ToList();
+            var data = context.TblMatHangs.Select(item => new
+            {
+                MaHang = item.MaHang,
+                TenHang = item.TenHang,
+                Dvt = item.Dvt,
+                Gia = item.Gia,
+                CategoryId = item.CategoryId,
+                CategoryName = item.Category.CategoryName,
+            }).ToList();
             return Json(data);
         }
 
@@ -62,14 +80,15 @@ namespace ProjectPRN211.Controllers
             return Json(ChiTietHds);
         }
 
-        public JsonResult AddMatHang(string ma, string ten, string dvt, string gia)
+        public JsonResult AddMatHang(string ma, string ten, string dvt, string gia, string categoryId)
         {
             TblMatHang mathang = new TblMatHang
             {
                 MaHang = ma,
                 TenHang = ten,
                 Dvt = dvt,
-                Gia = float.Parse(gia, CultureInfo.InvariantCulture.NumberFormat)
+                Gia = float.Parse(gia, CultureInfo.InvariantCulture.NumberFormat),
+                CategoryId = int.Parse(categoryId)
             };
             try
             {
@@ -204,6 +223,30 @@ namespace ProjectPRN211.Controllers
                 data = data.Where(item => item.CategoryId == int.Parse(categoryId)).ToList();
             }
             ViewBag.CategoryId = categoryId;
+            return Json(data);
+        }
+
+        public JsonResult SearchProduct(string value)
+        {
+            var data = context.TblMatHangs.ToList();
+            if (!string.IsNullOrEmpty(value))
+            {
+                data = context.TblMatHangs.Where(item => item.TenHang.Contains(value)).ToList();
+            }
+            return Json(data);
+        }
+
+        public JsonResult SortPrice(string orderBy)
+        {
+            var data = context.TblMatHangs.ToList();
+            if (orderBy.Equals("in"))
+            {
+                data = context.TblMatHangs.OrderBy(item => item.Gia).ToList();
+            }
+            else
+            {
+                data = context.TblMatHangs.OrderByDescending(item => item.Gia).ToList();
+            }
             return Json(data);
         }
     }

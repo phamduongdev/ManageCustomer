@@ -18,6 +18,7 @@ namespace ProjectPRN211.Controllers
                 TblUser result = context.TblUsers.FirstOrDefault(x => x.Username == user.Username && x.Pass == user.Pass);
                 if (result != null)
                 {
+                    HttpContext.Session.SetString("username", result.Username);
                     return RedirectToAction("Tasks", "Home");
                 }
             }

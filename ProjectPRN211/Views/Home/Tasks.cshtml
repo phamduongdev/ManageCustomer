@@ -84,8 +84,17 @@
                             </div>
                         </div>
                     </header>
+                    <section class="pt-5">
+                        <div class="d-flex justify-content-end container px-4 px-lg-5 mt-5">
+                            <select onchange="SortPrice(this)">
+                                <option value="in">Increase Price</option>
+                                <option value="de">Decrease Price</option>
+                            </select>
+                            <input type="text" oninput="SearchProduct(this)" placeholder="Search here..." />
+                        </div>
+                    </section>
                     <!-- Section-->
-                    <section class="py-5">
+                    <section class="py-4">
                         <div class="container px-4 px-lg-5 mt-5">
                             <div class="row">
                                 <div class="col-md-2">
@@ -105,7 +114,7 @@
                                             <div class="col mb-5">
                                                 <div class="card h-100">
                                                     <!-- Product image-->
-                                                    <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg"
+                                                    <img class="card-img-top" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS00B7DQbY6FiupHet6GTKd5i9FhCfxZFJRIg&usqp=CAU"
                                                      alt="..." />
                                                     <!-- Product details-->
                                                     <div class="card-body p-4">
@@ -174,6 +183,19 @@
                                             <label for="giaban">Giá bán :</label>
                                         </td>
                                         <td><input disabled oninput="CheckNumber(event)" type="text" id="giaban" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label for="category">Loại</label>
+                                        </td>
+                                        <td>
+                                            <select disabled id="category">
+                                                @foreach (TblCategory item in ViewBag.Categories)
+                                                {
+                                                    <option value="@item.CategoryId">@item.CategoryName</option>
+                                                }
+                                            </select>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -369,6 +391,7 @@
             setTimeout(() => {
                 axios.get("GetUpdateData")
                     .then((response) => {
+                console.log(response.data)
                         var content = `<table class="table table-hover table-bordered">
                                                                                                                                                                                                                                <thead>
                                                                                                                                                                                                                                   <tr>
@@ -376,6 +399,7 @@
                                                                                                                                                                                                                                        <th scope="col">TenHang</th>
                                                                                                                                                                                                                                        <th scope="col">DVT</th>
                                                                                                                                                                                                                                        <th scope="col">Gia</th>
+                                                                                                                                                                                                                                       <th scope="col">Loại</th>
                                                                                                                                                                                                                                    </tr>
                                                                                                                                                                                                                                </thead>
                                                                                                                                                                                                                                 <tbody>`;
@@ -385,6 +409,7 @@
                                                                                                                                                                                                                                                                                                                 <td>${item.tenHang}</td>
                                                                                                                                                                                                                                                                                                                 <td>${item.dvt}</td>
                                                                                                                                                                                                                                                                                                                 <td>$${item.gia}</td>
+                                                                                                                                                                                                                                                                                                                        <td>${item.categoryName}</td>
                                                                                                                                                                                                                                                                                                                 </tr>`;
                         }
                         content += `</tbody>
@@ -426,6 +451,7 @@
             document.getElementById("tenhang").disabled = input;
             document.getElementById("donvi").disabled = input;
             document.getElementById("giaban").disabled = input;
+            document.getElementById("category").disabled = input;
         }
 
         function Moi() {
@@ -440,9 +466,10 @@
                         var ten = document.getElementById("tenhang").value
                         var dvt = document.getElementById("donvi").value
                         var gia = document.getElementById("giaban").value
+                        var categoryId = document.getElementById("category").value
                         axios.get("AddMatHang", {
                             params: {
-                                ma, ten, dvt, gia,
+                                ma, ten, dvt, gia, categoryId
                             }
                         })
                             .then((response) => {
@@ -847,7 +874,93 @@
                     content += `<div class="col mb-5">
                                                         <div class="card h-100">
                                                             <!-- Product image-->
-                                                            <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg"
+                                                                    <img class="card-img-top" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS00B7DQbY6FiupHet6GTKd5i9FhCfxZFJRIg&usqp=CAU"
+                                                             alt="..." />
+                                                            <!-- Product details-->
+                                                            <div class="card-body p-4">
+                                                                <div class="text-center">
+                                                                    <!-- Product name-->
+                                                                            <h5 class="fw-bolder">${item.tenHang}</h5>
+                                                                    <!-- Product price-->
+                                                                            $${item.gia}
+                                                                </div>
+                                                            </div>
+                                                            <!-- Product actions-->
+                                                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                                                <div class="text-center">
+                                                                    <a class="btn btn-outline-dark mt-auto" asp-controller="Product" href="/Product/ProductDetail?maHang=${item.maHang}">
+                                                                        Chi tiết
+                                                                    </a>
+                                                                </div>
+                                                                <div class="text-center">
+                                                                            <a class="btn btn-outline-dark mt-auto" onclick="AddToCart('${item.maHang}', '${item.tenHang}', '${item.dvt}', ${item.gia})">
+                                                                        Thêm vào giỏ hàng
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>`;
+                }
+                document.getElementById("product-data").innerHTML = content
+            })
+        }
+
+        function SearchProduct(input) {
+            var value = input.value;
+            axios.get("SearchProduct", {
+                params: {
+                    value
+                }
+            }).then((response) => {
+                var content = "";
+                for (const item of response.data) {
+                    content += `<div class="col mb-5">
+                                                                <div class="card h-100">
+                                                                    <!-- Product image-->
+                                                                            <img class="card-img-top" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS00B7DQbY6FiupHet6GTKd5i9FhCfxZFJRIg&usqp=CAU"
+                                                                     alt="..." />
+                                                                    <!-- Product details-->
+                                                                    <div class="card-body p-4">
+                                                                        <div class="text-center">
+                                                                            <!-- Product name-->
+                                                                                    <h5 class="fw-bolder">${item.tenHang}</h5>
+                                                                            <!-- Product price-->
+                                                                                    $${item.gia}
+                                                                        </div>
+                                                                    </div>
+                                                                    <!-- Product actions-->
+                                                                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                                                        <div class="text-center">
+                                                                            <a class="btn btn-outline-dark mt-auto" asp-controller="Product" href="/Product/ProductDetail?maHang=${item.maHang}">
+                                                                                Chi tiết
+                                                                            </a>
+                                                                        </div>
+                                                                        <div class="text-center">
+                                                                                    <a class="btn btn-outline-dark mt-auto" onclick="AddToCart('${item.maHang}', '${item.tenHang}', '${item.dvt}', ${item.gia})">
+                                                                                Thêm vào giỏ hàng
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>`;
+                }
+                document.getElementById("product-data").innerHTML = content
+            })
+        }
+
+        function SortPrice(input) {
+            var orderBy = input.value
+            axios.get("SortPrice", {
+                params: {
+                    orderBy
+                }
+            }).then((response) => {
+                var content = "";
+                for (const item of response.data) {
+                    content += `<div class="col mb-5">
+                                                        <div class="card h-100">
+                                                            <!-- Product image-->
+                                                                    <img class="card-img-top" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS00B7DQbY6FiupHet6GTKd5i9FhCfxZFJRIg&usqp=CAU"
                                                              alt="..." />
                                                             <!-- Product details-->
                                                             <div class="card-body p-4">

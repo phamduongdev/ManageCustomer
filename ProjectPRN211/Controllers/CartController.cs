@@ -10,16 +10,24 @@ namespace ProjectPRN211.Controllers
 
         public IActionResult CartDetail()
         {
-            var data = context.TblCarts.ToList();
-            ViewBag.Carts = data;
-            ViewBag.Size = data.Count;
-            float sum = 0;
-            foreach (var item in data)
+            string name = HttpContext.Session.GetString("username");
+            if (!string.IsNullOrEmpty(name))
             {
-                sum += (float)item.Gia * (float)item.Soluong;
+                var data = context.TblCarts.ToList();
+                ViewBag.Carts = data;
+                ViewBag.Size = data.Count;
+                float sum = 0;
+                foreach (var item in data)
+                {
+                    sum += (float)item.Gia * (float)item.Soluong;
+                }
+                ViewBag.Sum = sum;
+                return View();
             }
-            ViewBag.Sum = sum;
-            return View();
+            else
+            {
+                return RedirectToAction("Login", "Login");
+            }
         }
 
         public JsonResult CheckOut(string data_order)
